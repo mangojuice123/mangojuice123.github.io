@@ -1,0 +1,86 @@
+{
+    "log": {
+        "error": "",
+        "loglevel": "info",
+        "access": ""
+    },
+    "inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "protocol": "socks",
+            "settings": {
+                "udp": false,
+                "auth": "noauth"
+            },
+            "port": "1080"
+        },
+        {
+            "listen": "127.0.0.1",
+            "protocol": "http",
+            "settings": {
+                "timeout": 360
+            },
+            "port": "1087"
+        }
+    ],
+    "outbounds": [
+        {
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            },
+            "protocol": "vmess",
+            "streamSettings": {
+                "network": "tcp",
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                },
+                "security": "none"
+            },
+            "tag": "proxy",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "c901scu.jamjams.net",
+                        "users": [
+                            {
+                                "id": "29f441dd-81b7-41d4-867e-d9e81575412b",
+                                "alterId": 0,
+                                "level": 0,
+                                "security": "aes-128-gcm"
+                            }
+                        ],
+                        "port": 11727
+                    }
+                ]
+            }
+        },
+        {
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "UseIP",
+                "userLevel": 0
+            }
+        },
+        {
+            "tag": "block",
+            "protocol": "blackhole",
+            "settings": {
+                "response": {
+                    "type": "none"
+                }
+            }
+        }
+    ],
+    "dns": {},
+    "routing": {
+        "settings": {
+            "domainStrategy": "AsIs",
+            "rules": []
+        }
+    },
+    "transport": {}
+}
